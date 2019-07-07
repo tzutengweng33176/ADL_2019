@@ -1,0 +1,81 @@
+改PG的部分，要怎麽改呢？
+
+全部改完之後，再來處理A2C
+
+
+A2C的部分不好處理，先把self.recurrent關掉，train的起來再來處理self.recurrent
+不用self.recurrent先test看看
+看有沒有辦法過simple baseline
+
+目前train的起來，可以test，可是avg reward很差
+一定是中間有步驟錯了。可能是在discounted reward那裡算錯
+所以要比對
+
+Getting averaging reward in 10 episodes over 1500 in SuperMarioBros (2%)
+Getting averaging reward in 10 episodes over 3000 in SuperMarioBros (2%)
+
+這個沒做完之後可以慢慢研究
+
+
+再來要處理改pg和改dqn的部份
+到底要怎麼改阿？ 改pg和改DQN的部份
+DQN -->DDQN(V), dueling DQN, prioritized replay, distributional DQN.....
+https://github.com/dxyang/DQN_pytorch/blob/master/learn.py
+
+
+pg --> variance reduction, natural policy gradient.....
+
+pg, dqn, a2c差別要搞清楚才有辦法改
+
+要先把BASELINE都備份起來，然後再來改，要不然會很慘(V)
+
+
+也可以考慮先處理A2C
+A2C有解答，可以參考一下
+
+而且對未來也有幫助
+
+都過了.......
+處理report的部份 
+1. 先學畫圖(V)
+2. 畫完圖之後調整hyperparameters(V)
+
+
+要挑一種hyperparameters然後試4個值，然後把這4個值跑出來的learning curve畫在同一張圖上
+所以應該要先把不同參數值的learning curve都記錄下來，然後再同一個檔案裡面load進去畫圖  
+畫圖的檔案應該是要另外開(v)
+
+可以跟助教討論一下
+
+
+
+先處理policy gradient
+policy gradient部份要把理論搞熟才有辦法寫程式
+所以以線上課程為主
+
+baseline莫名其妙過了。 他算loss的方法有點怪 
+看不太懂
+
+
+把理論搞熟應該就可以把程式碼看懂  然後就可以直接用SAMPLE CODE改(V)
+
+處理完policy gradient -->處理dqn
+dqn... 為什麼要有policy net和target net?????
+WHY?????
+好奇怪！！！
+
+
+看code
+先過baseline(V)
+
+完成todo的部分
+Plot the learning curve!! How to plot the learning curve????
+
+4/30以前要有進度
+
+過baseline後
+試試supermario!!!
+很重要！
+
+壹定要會～～學AI~~~~
+

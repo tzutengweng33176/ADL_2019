@@ -1,0 +1,10 @@
+train到滿
+        self.gamma = 0.99 
+        
+        # training hyperparameters
+        self.num_episodes = 10000 # total training episodes (actually too large...)
+        self.display_freq = 10 # frequency to display training progress
+        
+        # optimizer
+        self.optimizer = torch.optim.Adam(self.model.parameters(), lr=1e-2)
+        

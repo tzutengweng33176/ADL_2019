@@ -1,0 +1,22 @@
+Episode: 9760 | Steps: 2620245/3000000 | Avg reward: 9.100000 | loss: 0.037604
+
+
+        # discounted reward
+        self.GAMMA = 0.99 
+        
+        # training hyperparameters
+        self.train_freq = 4 # frequency to train the online network
+        self.learning_start = 10000 # before we start to update our network, we wait a few steps first to fill the replay.
+        self.batch_size = 32
+        self.num_timesteps = 3000000 # total training steps
+        self.display_freq = 10 # frequency to display training progress
+        self.save_freq = 200000 # frequency to save the model
+        self.target_update_freq = 1000 # frequency to update target network
+        #epsilon greedy policy hyperparameters
+        self.eps_start = 0.9
+        self.eps_end = 0.05
+        self.eps_decay= 200
+        # optimizer
+        self.optimizer = optim.RMSprop(self.online_net.parameters(), lr=1e-4)
+
+
