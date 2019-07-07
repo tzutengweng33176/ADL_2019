@@ -1,0 +1,7 @@
+{
+    "arch": "ExampleNet",
+    "test": "./data/test.pkl",
+    "model_parameters": {
+        "embedding": "./data/embedding.pkl"
+    }
+}

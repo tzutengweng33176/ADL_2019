@@ -1,0 +1,88 @@
+繳交前把test.json放在隨便一個資料夾試試看，務必把全部的code都重新跑一遍
+4/1做最後測試
+
+
+How to download files from google drive in download.sh?
+You have to download the files to the assigned directory~~
+TRY dropbox~~or ntu home page 
+don't use google drive
+use 1. wget or 2. curl (V)
+
+處理.sh的問題
+1. 你們在測試
+
+bash ./rnn.sh $1 $2
+
+$1 $2如果都是一樣的directory可以嗎？
+
+還是一定要不同的directory?
+
+$1 $2 都是我們會傳給你的 script 的參數，是我們執行時指定的，並且是完整的包含檔案名稱的路徑，不保證會不會在同一個資料夾下。 
+
+2.不用上傳testing data是你們會另外準備testing data嗎？
+
+那你們testing data會放在哪個資料夾？
+
+我們有需要放一個/data 的資料夾嗎？
+
+對，我們會準備測試資料，然後在 $1 指定測試資料的路徑。沒有一定要放 /data 的資料夾。
+
+
+多利用
+https://docs.python.org/2/library/argparse.html
+
+Visualize the attention(V)
+
+最後要把訓練好的model在測試一次，上傳到kaggle看看是否有同樣的結果
+包括rnn
+rnn with attention 
+best model
+
+
+recall@10衝到0.76667就可以過RNN with attention baseline
+
+model_rnn_0320.pkl.9 會過RNN without attention的simple baseline
+
+model_rnn_0323.pkl.9 會過RNN without attention的simple baseline: 9.61999
+model_rnnatt_0322.pkl.8 會過RNN with attention的simple baseline!!!!!!! QQ
+model_best_0324.pkl.9 -->best result--->9.4333333
+
+為什麼recall@10一直在0.5上下跑？我猜是因為每次算出來的score都差不多
+attention算的時候肯定有問題，算出來的attention出來可能還要再處理一下
+
+
+研究base_predictionV
+研究metrics.pyV
+positive examples and negative examples????V
+
+recall @ 10-> ask TAsV
+如何定義relevant items??  -->positive才是relevant
+因為每一個sample只有一個正確答案，所以recall的分母就是sample的總數
+
+如果training速度太慢，可以把batch size調大一點，這樣會比較快
+
+如果predict出來前十名沒有correct answer就算false negative
+如果correct answer在前十名就算true positive
+
+training時是不是就沒辦法算recall@10
+
+了解一下到底為什麼加了attention之後performance還是起不來？
+到底是出了什麼問題？我覺得要等到epoch全部跑完再來下結論
+只能等.......
+
+How to calculate scores after calculating the attention???
+
+
+https://github.com/Janinanu/Retrieval-based_Chatbot/blob/master/PyTorch_Dialog_System_Notebook.ipynb
+
+
+in evaluation set....
+
+WHY???????
+logits.shape:  torch.Size([10, 5])
+batch['labels']:  tensor([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0],
+
