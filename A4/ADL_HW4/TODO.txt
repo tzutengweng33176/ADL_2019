@@ -1,0 +1,195 @@
+2019/5/19
+MODE COLLAPSE FID score不會好
+一定要沒有mode collapse才會好
+
+可以batch size 128再跑一次  看看會不會一模一樣
+我猜結果會不太相同
+
+先backward()再加
+跟先加再backward()應該是沒差吧？？？？
+
+禮拜四可以再玩玩看 WGAN-GP  主要是把batch normalization 拿掉
+不知道會發生什麼事-->效果好很多，只是目前classifier壞掉 沒辦法依照條件產生正確的圖片
+這部份不知道要怎麼辦
+
+2019/5/23 把BCEloss改成NLLloss discriminator最後一層換成logSoftMax -->這樣還是沒辦法依照條件產生圖片。真的要問助教！！不知道問題出在哪
+基本上條件都是一模一樣的，只有random noise不一樣，可是generator不會依照條件產生圖。而是隨機選圖
+不知道會不會像張育堂說的那樣。train久一點就會自己學到。 
+
+2019/5/24 這樣應該是成功了  把它train完測一下	FID  然後寫	report~~~ 
+train到不能再train為止
+
+
+WGAN references:
+https://zhuanlan.zhihu.com/p/25071913
+https://www.alexirpan.com/2017/02/22/wasserstein-gan.html
+
+TRY WGAN的train法，discriminator多train幾次，加上weight clipping
+discriminator拿掉sigmoid 
+loss不用log
+試完weight clipping-->試WGAN-GP(把RMSprop換成Adam)
+https://github.com/Zeleni9/pytorch-wgan/blob/master/models/wgan_gradient_penalty.py
+據可靠消息指出，WGAN-GP最讚
+
+
+專心調BATCH SIZE=128就好 
+b=128, 0~0.3, 0.7~1.0, 0.5, 1 -->FID=133
+b=128, 0~0.3, 0.7~1.0, 0.5, 1 -->FID= -->second time  一開始就mode collapse是怎樣......
+試試看apply weights init-->XXXX
+b=128, 0~0.3, 0.7~1.2, 0.5, 1 -->FID= 19X  -->failed
+b=128, 0~0.3, 0.7~1.0, 1, 1 -->FID=     
+b=128, 0~0.3, 0.7~1.0, 0.9, 1 -->FID=
+b=128, 0~0, 0.9~1.0,  0.5, 1 -->FID=   -->網路anime generation原始
+b=128, 0~0.3, 0.7~1.0, 0.9, 1 -->FID=
+b=128, 0~0, 0.7~1.0, 0.5, 1 -->FID=    -->20190522 failed
+
+Learning rate decay?!
+如果差不多，試試看把soft label變到1.2--> failed
+0.5 -->1 
+
+可以跟助教討論看看
+
+batch size 256 step 5000可以測測看(X)
+看起來效果不錯～～
+
+
+
+
+Simple baseline過了....
+2 fake images don't work!!!
+
+batch size調高反而可以train 比較久。比較穩
+試試這個
+transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
+
+
+
+
+發現mode collpase
+
+可以試試看centercrop
+要不要centerCROP呢？ 如果中間下來的話，discriminator只會看到臉，不會看到白色的影像
+這樣的話可能就沒辦法生成和題目所要求一樣的圖
+
+可能會變得非常大張的臉
+
+
+
+所以一直往下train FID score就會一直降
+只要生出來的圖片不要花掉  就可以一直train  train到它沒辦法train為止
+
+
+
+ACGAN_split 23000效果還不錯 24000之後就暴了 b 16 iters 50000
+
+中間都沒動到generator 只有改discriminator
+所以就是discriminator的問題
+
+generator loss不斷上升 --> https://github.com/soumith/ganhacks/issues/14
+
+
+20190516 
+ACGAN_splt  batch 8 iters 100000 --> USE THIS TO CALCULATE fid SCORE
+
+
+STACK GAN?!
+
+等到實驗跑完一輪再說
+跑完之後試新的train_NLL_split.py
+這次的結果已經比之前好很多了
+
+果然需要不同的CLASSIFIER,generator的架構完全沒變，只有改動discriminator就造成如此大的差別
+
+真的蠻神奇的
+
+
+
+1. 有把classifier分成hair classifer, eye classifier, glasses classifier....嘛？
+有！
+
+2. 直接輸出成128*128還是64*64再放大？
+直接輸出成128*128
+
+Try AC GAN
+https://arxiv.org/pdf/1610.09585.pdf
+https://github.com/znxlwm/pytorch-generative-model-collections
+
+https://github.com/Mckinsey666/ACGAN-Conditional-Anime-Generation
+-->it's similar to anime generation
+modify the code in Anime Generation
+
+finish train.py first
+
+do some data preprocessing(V)
+just dump a image_to_tag dict to pickle containing 
+{image file name : 15-d tensor}
+
+OK train起來了  會發生什麼事  不知道
+會不會成功  不知道
+目前sample出來的圖片，有重複的情形。
+不知道要怎麼樣才能改善
+
+盡量改的跟tutorial一樣  會發生什麼事  不知道
+理論上要train到77000 iters才會過strong baseline
+
+還有一個地方就是你沒有face, eye color, hair color...的probability distribution
+不知道這個會不會有影響
+要改loss function請參考github，不要自己用手算亂改一通
+step 500就應該看到人臉，如果沒看到人臉表示改錯
+
+如果要改動train.py 先留備份  
+基本上依照github上改應該是不會有問題  只要train的起來
+出來有圖  就好～～
+
+先過strong baseline
+之後再慢慢改 objective function
+
+batch 32 step 300000 爛掉了....
+難道是loss function的關係？！--->寫在REPORT中
+
+
+
+
+如果有train成功(V)，就繼續改test.py
+看起來應該是有成功，所以等到實驗跑完，改test.py然後試試看能不能過strong baseline
+
+如果能過strong baseline  開始寫report
+
+report寫完基本的之後，再嘗試其他實驗
+
+先把完整的50000跑完，再看看情況
+generator依照pytorch官網，不用生成兩次
+只要生一次就好
+
+
+
+after fininshing train.py, do test.py
+
+copy and paste~~~
+
+
+15 classes(X) + 100  =115-d for input to Generator
+
+maybe 6*4*3*2  = 144 classes (X)
+
+there are 4 classes, each class has 1 one-hot encoding
+hair color  6d
+eye color  4d
+face color 3d
+w/, w/o glasses 2d
+
+image size: 3*128*128
+
+
+
+
+I think we should concatenate labels(15-d) and the latent representation of the image(100-d) together
+and see it as input to the Generator
+the Generator will generate images corresponding to the labels(condition)
+
+
+
+
+
+
+
