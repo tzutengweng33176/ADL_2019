@@ -1,0 +1,71 @@
+Fine-tuning is typically very fast, so it is reasonable to simply run an exhaustive search over
+the above parameters and choose the model that
+performs best on the development set
+
+seq=110, 128  --> Run out of memory
+不用改classifier就會過，依照原本論文，只要把參數調一調就可以
+如果還是沒過，可能是predict的部分出問題
+
+epoch=3就會過了
+HW3出來以前要有結果！！！
+一過strong baseline開始寫report，然後依照助教指示做ElMo模型！
+
+
+epoch=3  b=32, lr=2e-5 (V) predict OK
+acc = 0.4477747502270663 
+
+epoch=3  b=32, lr=3e-5 
+acc = 0.4368755676657584
+
+epoch=3  b=32, lr=5e-5 (V)
+acc = 0.44323342415985467
+
+epoch=3  b=16, lr=2e-5
+acc = 0.4268846503178928
+
+epoch=3  b=16, lr=3e-5 
+acc = 0.4368755676657584
+
+epoch=3  b=16, lr=5e-5 
+acc = 0.4141689373297003
+
+epoch=4  b=32, lr=2e-5
+acc = 0.4296094459582198
+epoch=4  b=32, lr=3e-5
+acc = 0.4187102633969119
+
+epoch=4  b=32, lr=5e-5 
+acc = 0.4069028156221617
+
+epoch=4  b=16, lr=2e-5(V)  
+acc = 0.43505903723887374
+
+epoch=4  b=16, lr=3e-5 
+acc = 0.40599455040871935
+epoch=4  b=16, lr=5e-5
+acc = 0.4150772025431426
+
+
+How to input fine-tuned model?????
+https://github.com/huggingface/pytorch-pretrained-BERT/issues/375
+
+
+
+應該是不用改code  只要把參數改一改就好
+明天研究！！！ (V)
+
+0.39638 for 3 epochs-->try 10 epochs
+
+
+bert-base-uncased 
+training 會到0.8~0.9
+validation 會到0.4X  training不用超過5個epoch
+只要train 1~2 epochs 就會過strong baseline!!!
+
+WEIGHTS_NAME, CONFIG_NAME 是三小？！
+https://github.com/huggingface/pytorch-pretrained-BERT/blob/master/pytorch_pretrained_bert/modeling.py
+
+CONFIG_NAME = 'bert_config.json'
+WEIGHTS_NAME = 'pytorch_model.bin'
+TF_WEIGHTS_NAME = 'model.ckpt'
+

@@ -1,0 +1,72 @@
+今天要問的是資料前處理的部份
+資料讀進去因為是一個batch，裡面每句話的長度都不一樣，如果你先加<BOS>, <EOS>再補<pad>  
+之後再切的時候會出問題
+
+所以應該是要先把短的補到跟長的長度一樣長，再加<BOS>, <EOS>
+但是這樣效能會不會受影響就不知道了
+
+MY GOD!!!!!
+I am close to simple baseline!!!! 
+May try to train for only 1 epoch.
+調random seed試試看
+
+可以試試2M, 1 epoch
+問題真的不好排除，因為有可能是random seed，也有可能是ELMo訓練的epoch數目不對
+不過資料前處理的部份有做好應該都是會過
+
+
+目前只提高1~2%   問題出在哪？還真的不知道
+可以問問看資料處理的部份還有testing的部分
+testing的部分比較奇怪
+因為先讀進去加<BOS>, <EOS>
+可是因為是一個batch，所以很多句子<EOS>後面是<PAD>
+這樣最後在切的時候。 只會剩下<BOS> ...<EOS> <PAD>...<PAD>
+把前後都切掉。還是會剩下<EOS>
+這部分要怎麼處理。 處理之後accuracy會不會增加。 我覺得可以問問看助教
+真的做不出來。就只好放棄simple baseline
+趕快做A3
+
+原paper中提高大約3~4%
+所以BCN withou ELMO-->0.43
+可以預期提高到0.46~0.47
+
+
+training一定要加dropout!
+max_char 設成16 -->超過就變成OOV
+助教是用兩次Charembedding 正的跑一次，反的跑一次，不過是用同一個CharEmbedding
+
+
+1M data 跑2hr過simple baseline!
+沒過要檢討
+
+跑4hrs就會有明顯的進步  可以跑到6hrs~10hrs 
+假如accuracy上不去  表示model做錯
+
+
+如果1M跑不動Ｍ試試看0.1M跑10 epochs
+
+performance目前反而下降-->問助教！！！！
+看model有沒有問題，再來是確認取的層對不對
+確認參數
+
+之後要把code改成可以輸入參數的形式
+
+
+先試看小的training set(V)
+小epoch(V)
+
+train完之後，接到BCN train一下看有沒有進步，如果有進步，
+再用大的dataset
+
+too many values to unpack?! what the fuck?!(V)
+
+elmo 要return 2, batch_size, seq_len -1, 512(V)
+要不然沒辦法用
+
+
+
+
+deal with plerplexity if you have time!
+
+
+
